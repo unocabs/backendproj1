@@ -6,6 +6,8 @@ import com.rosgian.backendproj1.service.CoffeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/coffee")
 public class CoffeeController {
@@ -18,7 +20,7 @@ public class CoffeeController {
     }
 
     @PostMapping
-    public CoffeeDTO postCoffee (@RequestBody CoffeeModel coffeeModel) {
+    public List<CoffeeDTO> postCoffee (@RequestBody CoffeeModel coffeeModel) {
         return coffeeService.postCoffee(coffeeModel);
     }
 }
