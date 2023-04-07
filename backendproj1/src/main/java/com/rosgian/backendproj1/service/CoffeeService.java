@@ -8,6 +8,8 @@ import com.rosgian.backendproj1.repository.CoffeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -16,37 +18,28 @@ public class CoffeeService {
 
     private final CoffeeRepository coffeeRepository;
 
-    public CoffeeDTO postCoffee(CoffeeModel coffeeModel) {
+    public List<CoffeeDTO> getAllCoffee() {
+        List<CoffeeEntity> coffeeEntities = coffeeRepository.findAll();
+        List<CoffeeDTO> coffeeDTOList = new ArrayList<>();
+
+        /*for loop*/
+        coffeeEntities.forEach(coffeeEntity -> coffeeDTOList.add(CoffeeDTO.builder()
+                .coffeeName(coffeeEntity.getCoffeeName())
+                .location(coffeeEntity.getLocation())
+                .price(coffeeEntity.getPrice())
+                .build()));
+
+        return coffeeDTOList;
+    }
+
+    public List<CoffeeDTO> postCoffee(CoffeeModel coffeeModel) {
         coffeeRepository.save(CoffeeEntity.builder()
                 .coffeeId(UUID.randomUUID())
                 .coffeeName(coffeeModel.getCoffeeName())
                 .location(coffeeModel.getLocation())
                 .price(coffeeModel.getPrice())
                 .build());
-         /*CoffeeDTO.builder()
-                .coffeeName(coffeeModel.getCoffeeName())
-                .location(coffeeModel.getLocation())
-                .price(coffeeModel.getPrice())
-                .build();*/
 
-        return null;
+        return getAllCoffee();
     }
-/*
-    public List<BlogDTO> addBlog(BlogRequest newBlog) {
-
-        // Save new blog to database
-        blogRepository.save(BlogEntity
-                .builder()
-                .blogId(UUID.randomUUID())
-                .blogName(newBlog.getBlogName())
-                .blogAuthor(newBlog.getBlogAuthor())
-                .imageLink(null)
-                .description(newBlog.getDescription())
-                .createdDate(dateTimeUtil.currentDate())
-                .modifiedDate(dateTimeUtil.currentDate())
-                .build());
-
-        return getAllBlogs();
-    }*/
-
 }
